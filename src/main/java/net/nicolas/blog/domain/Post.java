@@ -3,7 +3,7 @@ package net.nicolas.blog.domain;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class Post {
@@ -17,21 +17,18 @@ public class Post {
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Content content;
     @ElementCollection
-    private List<String> tags;
+    private Set<String> tags;
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Author author;
     private Integer rating;
-
-    public Post(){
-
-    }
 
     public Post(String title, LocalDateTime published) {
         this.title = title;
         this.draft = true;
         this.published = published;
         this.content = new Content("My very interesting content, dont miss this");
-        this.tags = Arrays.asList("Tech", "Techies");
+        this.tags = new HashSet<>();
+        this.tags.addAll(Arrays.asList("Tech", "Techies"));
         this.author = new Author();
         this.rating = 3;
     }
@@ -76,11 +73,11 @@ public class Post {
         this.content = content;
     }
 
-    public List<String> getTags() {
+    public Set<String> getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(Set<String> tags) {
         this.tags = tags;
     }
 
@@ -98,5 +95,25 @@ public class Post {
 
     public void setRating(Integer rating) {
         this.rating = rating;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equals(id, post.id) &&
+                Objects.equals(title, post.title) &&
+                Objects.equals(draft, post.draft) &&
+                Objects.equals(published, post.published) &&
+                Objects.equals(content, post.content) &&
+                Objects.equals(tags, post.tags) &&
+                Objects.equals(author, post.author) &&
+                Objects.equals(rating, post.rating);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, draft, published, content, tags, author, rating);
     }
 }

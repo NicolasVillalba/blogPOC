@@ -1,8 +1,7 @@
 package net.nicolas.blog.domain;
 
 import javax.persistence.*;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class Content {
@@ -14,14 +13,11 @@ public class Content {
     private String text;
 
     @ElementCollection
-    private List<String> images;
-
-    public Content(){
-
-    }
+    private Set<String> images;
 
     public Content(String text){
-        this.images = this.images = Arrays.asList("https://via.placeholder.com/350x150", "https://via.placeholder.com/350x150");
+        this.images =  new HashSet<>();
+        this.images.addAll(Arrays.asList("https://via.placeholder.com/350x150", "https://via.placeholder.com/350x150"));
         this.text = text;
     }
 
@@ -41,11 +37,26 @@ public class Content {
         this.text = text;
     }
 
-    public List<String> getImages() {
+    public Set<String> getImages() {
         return images;
     }
 
-    public void setImages(List<String> images) {
+    public void setImages(Set<String> images) {
         this.images = images;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Content content = (Content) o;
+        return Objects.equals(id, content.id) &&
+                Objects.equals(text, content.text) &&
+                Objects.equals(images, content.images);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, text, images);
     }
 }

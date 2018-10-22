@@ -2,7 +2,8 @@ package net.nicolas.blog.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Author {
@@ -13,7 +14,7 @@ public class Author {
     private String fullName;
     private String about;
     @OneToMany(fetch = FetchType.LAZY)
-    private List<Post> entries;
+    private Set<Post> entries;
 
     public Author(){
         this.fullName = "Jhon Doe";
@@ -47,11 +48,27 @@ public class Author {
         this.about = about;
     }
 
-    public List<Post> getEntries() {
+    public Set<Post> getEntries() {
         return entries;
     }
 
-    public void setEntries(List<Post> entries) {
+    public void setEntries(Set<Post> entries) {
         this.entries = entries;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Author author = (Author) o;
+        return Objects.equals(id, author.id) &&
+                Objects.equals(fullName, author.fullName) &&
+                Objects.equals(about, author.about) &&
+                Objects.equals(entries, author.entries);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fullName, about, entries);
     }
 }
