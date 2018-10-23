@@ -17,13 +17,14 @@ public class Post {
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Content content;
     @ElementCollection
-    private Set<String> tags;
+    private Set<String> tags = new HashSet<>();
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Author author;
     private Integer rating;
 
     public Post(){
-
+        this.tags.add("Draft");
+        this.rating = 0;
     }
 
     public Post(String title, LocalDateTime published) {
