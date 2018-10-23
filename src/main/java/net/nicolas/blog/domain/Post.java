@@ -22,6 +22,10 @@ public class Post {
     private Author author;
     private Integer rating;
 
+    public Post(){
+
+    }
+
     public Post(String title, LocalDateTime published) {
         this.title = title;
         this.draft = true;

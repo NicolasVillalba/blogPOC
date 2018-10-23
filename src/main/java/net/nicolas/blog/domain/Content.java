@@ -15,6 +15,10 @@ public class Content {
     @ElementCollection
     private Set<String> images;
 
+    public Content(){
+
+    }
+
     public Content(String text){
         this.images =  new HashSet<>();
         this.images.addAll(Arrays.asList("https://via.placeholder.com/350x150", "https://via.placeholder.com/350x150"));
