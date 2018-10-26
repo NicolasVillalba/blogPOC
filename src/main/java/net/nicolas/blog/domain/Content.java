@@ -20,8 +20,7 @@ public class Content {
     }
 
     public Content(String text){
-        this.images.addAll(Arrays.asList("https://via.placeholder.com/350x150", "https://via.placeholder.com/350x150"));
-        this.text = text;
+        this.setText(text);
     }
 
     public Long getId() {
@@ -61,5 +60,14 @@ public class Content {
     @Override
     public int hashCode() {
         return Objects.hash(id, text, images);
+    }
+
+    @Override
+    public String toString() {
+        return "Content{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", images=" + images +
+                '}';
     }
 }
