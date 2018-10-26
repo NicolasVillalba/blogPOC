@@ -23,19 +23,13 @@ public class Post {
     private Integer rating;
 
     public Post(){
-        this.tags.add("Draft");
-        this.rating = 0;
+
     }
 
     public Post(String title, LocalDateTime published) {
         this.title = title;
-        this.draft = true;
+        this.draft = false;
         this.published = published;
-        this.content = new Content("My very interesting content, dont miss this");
-        this.tags = new HashSet<>();
-        this.tags.addAll(Arrays.asList("Tech", "Techies"));
-        this.author = new Author();
-        this.rating = 3;
     }
 
     public Long getId() {
@@ -120,5 +114,19 @@ public class Post {
     @Override
     public int hashCode() {
         return Objects.hash(id, title, draft, published, content, tags, author, rating);
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", draft=" + draft +
+                ", published=" + published +
+                ", content=" + content +
+                ", tags=" + tags +
+                ", author=" + author +
+                ", rating=" + rating +
+                '}';
     }
 }
