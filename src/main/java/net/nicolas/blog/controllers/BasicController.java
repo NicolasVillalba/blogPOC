@@ -7,12 +7,10 @@ import net.nicolas.blog.services.PostsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/v0/")
 public class BasicController {
 
     @Autowired
@@ -26,13 +24,13 @@ public class BasicController {
         return new ResponseDTO("message", nameService.get());
     }
 
-    @PostMapping("/")
+    @PostMapping("/post")
     public ResponseDTO createPost(@RequestBody PostDTO post){
         postsService.save(post);
         return new ResponseDTO("message", "posted");
     }
 
-    @PostMapping("/enhance/post")
+    @PostMapping("/")
     public ResponseEntity<ResponseDTO> createPostEnhanced(@RequestBody PostDTO post){
         postsService.save(post);
          return ResponseEntity

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css"/>
+    <title>Title</title>
+    <!-- Uses a transparent header that draws on top of the layout's background -->
+    <style>
+        .demo-layout-transparent {
+            background-color: aliceblue;
+        }
+        .demo-layout-transparent .mdl-layout__header,
+        .demo-layout-transparent .mdl-layout__drawer-button {
+            /* This background is dark, so we set text to white. Use 87% black instead if
+               your background is light. */
+            color: white;
+        }
+    </style>
+</head>
+        <!-- Simple header with fixed tabs. -->
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
+                    mdl-layout--fixed-tabs">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <!-- Title -->
+                    <span class="mdl-layout-title">Post a Blog</span>
+                </div>
+                <!-- Tabs -->
+                <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+                    <a href="#fixed-tab-1" class="mdl-layout__tab is-active">Tab 1</a>
+                    <a href="#fixed-tab-2" class="mdl-layout__tab">Tab 2</a>
+                    <a href="#fixed-tab-3" class="mdl-layout__tab">Tab 3</a>
+                </div>
+            </header>
+            <div class="mdl-layout__drawer">
+                <span class="mdl-layout-title">Post A Blog</span>
+            </div>
+            <main class="mdl-layout__content">
+                <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
+                    <div class="page-content">
+                        <div style="margin: auto" class="mdl-card mdl-cell mdl-cell--4-col">
+                            <!-- FORM -->
+                            <form style="display: block; margin: auto">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="title" name="title"/>
+                                    <label class="mdl-textfield__label" for="title">Title</label>
+                                </div>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <textarea class="mdl-textfield__input" type="text" rows= "3" id="text" name="text"></textarea>
+                                    <label class="mdl-textfield__label" for="text">Text...</label>
+                                </div>
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="author" name="author"/>
+                                    <label class="mdl-textfield__label" for="author">Author</label>
+                                </div>
+                                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="draft">
+                                    <input type="checkbox" id="draft" class="mdl-checkbox__input" />
+                                    <span class="mdl-checkbox__label">Draft?</span>
+                                </label>
+                                <!-- Flat button -->
+                                <button id="btn" class="mdl-button mdl-js-button">
+                                    Publish
+                                </button>
+                            </form>
+                            <!-- FORM -->
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+        <div id="demo-snackbar-example" class="mdl-js-snackbar mdl-snackbar">
+            <div class="mdl-snackbar__text"></div>
+            <button class="mdl-snackbar__action" type="button"></button>
+        </div>
+    <body>
+        <script>
+            (function () {
+                'use strict';
+                function publishPost(params, http, url) {
+                    http.open('POST', url, true);
+
+                    //Send the proper header information along with the request
+                    http.setRequestHeader('Content-type', 'application/json');
+
+                    http.onload  = function() {//Call a function when the state changes.
+                        if (http.readyState === http.DONE) {
+                            if (http.status === 201) {
+                                snackbar({message: JSON.parse(http.response).content});
+                            }
+                        }
+                    };
+                    http.onerror  = function() {//Call a function when the state changes.
+                        snackbar({message: "We encounter some problems"});
+                    };
+
+                    function snackbar(data) {
+                        var snackbarContainer = document.querySelector('#demo-snackbar-example');
+                        snackbarContainer.MaterialSnackbar.showSnackbar(data);
+                    }
+                    http.send(JSON.stringify(params));
+                }
+
+                var url = 'http://localhost:9001/api/v0/';
+                var ajax = new XMLHttpRequest();
+                var title1 = document.getElementById('title');
+                var text1 = document.getElementById('text');
+                var checkbox = document.getElementById('draft');
+
+                var btn = document.getElementById("btn");
+                btn.addEventListener('click', function (ev) {
+                    var params = {
+                        "title": title1.value,
+                        "state": (checkbox.checked)?'draft': 'published',
+                        "text": text1.value,
+                        "imagePath": "",
+                        "authorId": 0
+                    };
+                    console.log(document.getElementById('title').value);
+                    console.log(params);
+                    ev.preventDefault();
+                    publishPost(params, ajax, url);
+                });
+            }())
+        </script>
+        <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    </body>
+</html>
