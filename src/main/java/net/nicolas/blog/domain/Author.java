@@ -30,7 +30,7 @@ public class Author {
         this.id = id;
     }
 
-    @Size(min = 5, max = 30)
+    @Size(max = 150)
     public String getFullName() {
         return fullName;
     }
@@ -39,7 +39,7 @@ public class Author {
         this.fullName = fullName;
     }
 
-    @Size(max = 300)
+    @Size(max = 2000)
     public String getAbout() {
         return about;
     }
